@@ -10,7 +10,7 @@ class HomeView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    int count = ref.watch(hello);
+    debugPrint("Whole Widget Build");
     return Scaffold(
         body: Center(
       child: Column(
@@ -24,10 +24,14 @@ class HomeView extends ConsumerWidget {
           SizedBox(
             height: 20,
           ),
-          Text(
-            count.toString(),
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-          ),
+          Consumer(builder: (context, ref, child) {
+            int count = ref.watch(hello);
+            debugPrint("Count Builded");
+            return Text(
+              count.toString(),
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            );
+          }),
           SizedBox(
             height: 20,
           ),
@@ -35,7 +39,15 @@ class HomeView extends ConsumerWidget {
               onPressed: () {
                 ref.read(hello.notifier).state++;
               },
-              child: Text("Press me"))
+              child: Text("Addition")),
+          SizedBox(
+            height: 10,
+          ),
+          ElevatedButton(
+              onPressed: () {
+                ref.read(hello.notifier).state--;
+              },
+              child: Text("Substraction"))
         ],
       ),
     ));
